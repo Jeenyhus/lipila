@@ -22,6 +22,16 @@ from django.db import models
 """
 
 class Product(models.Model):
+    """
+    · Product model
+
+    This model represents the product table in the database.
+    It contains the following fields:
+    - name: the name of the product
+    - price: the price of the product
+    - stock: the stock of the product
+
+    """
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
@@ -33,6 +43,16 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    """
+    · Order model
+
+    This model represents the order table in the database.
+    It contains the following fields:
+    - customer: the customer who placed the order
+    - total: the total amount of the order
+    - created_at: the date and time the order was created
+
+    """
     customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,6 +65,16 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    """
+    · OrderItem model
+
+    This model represents the order_item table in the database.
+    It contains the following fields:
+    - order: the order to which the item belongs
+    - product: the product in the order
+    - quantity: the quantity of the product
+    - price: the price of the product
+    """
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
@@ -58,6 +88,17 @@ class OrderItem(models.Model):
 
 
 class Payment(models.Model):
+    """
+    · Payment model
+
+    This model represents the payment table in the database.
+    It contains the following fields:
+    - order: the order for which the payment is made
+    - amount: the amount of the payment
+    - method: the payment method used
+    - created_at: the date and time the payment was made
+
+    """
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     method = models.CharField(max_length=50)
@@ -71,6 +112,15 @@ class Payment(models.Model):
 
 
 class Customer(models.Model):
+    """
+    · Customer model
+
+    This model represents the customer table in the database.
+    It contains the following fields:
+    - name: the name of the customer
+    - email: the email of the customer
+    - phone: the phone number of the customer
+    """
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=15)
@@ -82,6 +132,16 @@ class Customer(models.Model):
         return self.name
 
 class Transaction(models.Model):
+    """
+    · Transaction model
+
+    This model represents the transaction table in the database.
+    It contains the following fields:
+    - order: the order for which the transaction is made
+    - payment: the payment for the transaction
+    - created_at: the date and time the transaction was made
+    
+    """
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     payment = models.ForeignKey('Payment', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
